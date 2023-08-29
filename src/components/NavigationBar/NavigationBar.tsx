@@ -1,5 +1,4 @@
-import Cookies from "js-cookie"
-import { useEffect, useState } from "react"
+import useAuthButton from "../../../hooks/auth/useAuthButton"
 import Logo from "../Logo/Logo"
 
 interface NavigationBarProps {
@@ -7,19 +6,7 @@ interface NavigationBarProps {
 }
 
 const NavigationBar: React.FC<NavigationBarProps> = ({ scrollToSection }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
-
-  useEffect(() => {
-    const user = localStorage.getItem("user")
-    const accessToken = Cookies.get("accessToken")
-    setIsLoggedIn(!!(user && accessToken))
-  }, [])
-
-  const logout = () => {
-    localStorage.removeItem("user")
-    Cookies.remove("accessToken")
-    setIsLoggedIn(false)
-  }
+  const { buttonText, handleButtonClick } = useAuthButton()
 
   return (
     <div className="fixed top-0 z-10 w-full bg-white shadow">
@@ -61,12 +48,10 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ scrollToSection }) => {
               회원가입
             </a>
             <button
-              onClick={() => {
-                isLoggedIn ? logout() : scrollToSection("login")
-              }}
+              onClick={handleButtonClick}
               className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-medium text-white hover:bg-indigo-700"
             >
-              {isLoggedIn ? "로그아웃" : "로그인"}
+              {buttonText}
             </button>
           </div>
         </div>
