@@ -1,8 +1,8 @@
 import Head from "next/head"
 import { useEffect } from "react"
-import Login from "../components/Login/Login"
-import NavigationBar from "../components/NavigationBar/NavigationBar"
-import Signup from "../components/Signup/Signup"
+import Login from "../src/components/Login/Login"
+import NavigationBar from "../src/components/NavigationBar/NavigationBar"
+import Signup from "../src/components/Signup/Signup"
 
 export default function Web() {
   const scrollToSection = (sectionId: string) => {

@@ -1,5 +1,5 @@
-import { useAuthForm } from "../../hooks/auth/useAuthForm"
-import { emailPattern, passwordPattern } from "../../utils/validationPatterns"
+import { useAuthForm } from "../../../hooks/auth/useAuthForm"
+import { emailPattern, passwordPattern } from "../../../utils/validationPatterns"
 
 export default function Login() {
   const validate = (values: { email: string; password: string }) => {
