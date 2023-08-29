@@ -1,11 +1,11 @@
-export const saveToLocalStorage = <T>(key: string, value: T) => {
+export const setLocalStorageValue = <T>(key: string, value: T) => {
   if (typeof window === "undefined") {
     return
   }
   localStorage.setItem(key, JSON.stringify(value))
 }
 
-export const loadFromLocalStorage = <T>(key: string, defaultValue: T): T => {
+export const getLocalStorageValue = <T>(key: string, defaultValue: T): T => {
   if (typeof window === "undefined") {
     return defaultValue
   }

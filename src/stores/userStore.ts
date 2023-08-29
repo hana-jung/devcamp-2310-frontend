@@ -2,7 +2,7 @@ import Cookies from "js-cookie"
 import create, { SetState } from "zustand"
 import { devtools } from "zustand/middleware"
 import { ACCESS_TOKEN_EXPIRY_DAYS, REFRESH_TOKEN_EXPIRY_DAYS } from "../../config/authConfig"
-import { loadFromLocalStorage, saveToLocalStorage } from "../../utils/storage"
+import { getLocalStorageValue, setLocalStorageValue } from "../../utils/storage"
 
 type User = {
   id: string
@@ -22,26 +22,26 @@ type UserStore = {
 }
 
 const store = (set: SetState<UserStore>): UserStore => ({
-  user: loadFromLocalStorage<User | null>("user", null),
+  user: getLocalStorageValue<User | null>("user", null),
   accessToken: Cookies.get("accessToken") || null,
-  refreshToken: Cookies.get("accessToken") || null,
+  refreshToken: Cookies.get("refreshToken") || null,
   setAccessToken: (token) => {
     Cookies.set("accessToken", token, { expires: ACCESS_TOKEN_EXPIRY_DAYS })
     set({ accessToken: token })
   },
   setRefreshToken: (token) => {
     Cookies.set("refreshToken", token, { expires: REFRESH_TOKEN_EXPIRY_DAYS })
-    set({ accessToken: token })
+    set({ refreshToken: token })
   },
   setUser: (user) => {
-    saveToLocalStorage("user", user)
+    setLocalStorageValue("user", user)
     set({ user })
   },
   setAll: (userData: { user: User; accessToken: string; refreshToken: string }) => {
     const { user, accessToken, refreshToken } = userData
-    saveToLocalStorage("user", user)
-    Cookies.set("accessToken", accessToken, { expires: 7 })
-    Cookies.set("refreshToken", refreshToken, { expires: 30 })
+    setLocalStorageValue("user", user)
+    Cookies.set("accessToken", accessToken, { expires: ACCESS_TOKEN_EXPIRY_DAYS })
+    Cookies.set("refreshToken", refreshToken, { expires: REFRESH_TOKEN_EXPIRY_DAYS })
     set({ user, accessToken, refreshToken })
   },
   logout: () => {
