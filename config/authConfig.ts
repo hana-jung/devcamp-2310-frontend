@@ -1,1 +1,2 @@
 export const ACCESS_TOKEN_EXPIRY_DAYS = 1
+export const REFRESH_TOKEN_EXPIRY_DAYS = 7

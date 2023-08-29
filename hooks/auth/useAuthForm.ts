@@ -1,7 +1,6 @@
 import { AxiosError } from "axios"
 import { ChangeEvent, useState } from "react"
-import { ACCESS_TOKEN_EXPIRY_DAYS } from "../../config/authConfig"
-import Cookies from "js-cookie"
+import { useUserStore } from "../../src/stores/userStore"
 import { AuthResponse, ServerErrorResponse } from "../../types/apiResponse"
 
 export type Values = {
@@ -32,6 +31,8 @@ export function useAuthForm(
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [serverError, setServerError] = useState<string>("")
 
+  const { setAll } = useUserStore.getState()
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setValues({
@@ -53,8 +54,9 @@ export function useAuthForm(
           setTimeout(() => {
             resolve({
               data: {
-                user: { name: "user123", email: "user123@example.com" },
+                user: { id: "userId", name: "user123", email: "user123@example.com" },
                 accessToken: "fake-access-token",
+                refreshToken: "fake-refresh-token",
               },
             })
           }, 2000) // 1초 지연
@@ -66,8 +68,8 @@ export function useAuthForm(
         //   }, 1000) // 1초 지연
         // })
 
-        localStorage.setItem("user", JSON.stringify(response.data.user))
-        Cookies.set("accessToken", response.data.accessToken, { expires: ACCESS_TOKEN_EXPIRY_DAYS })
+        setAll(response.data)
+
         window.location.href = "/"
       } catch (err) {
         const axiosError = err as AxiosError<ServerErrorResponse>
