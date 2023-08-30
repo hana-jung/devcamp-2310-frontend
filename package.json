@@ -37,7 +37,7 @@
     "@semantic-release/github": "^9.0.0",
     "@semantic-release/npm": "^10.0.3",
     "@semantic-release/release-notes-generator": "^11.0.1",
-    "@t3-oss/env-nextjs": "^0.6.0",
+    "@t3-oss/env-nextjs": "^0.6.1",
     "@types/axios": "^0.14.0",
     "@types/js-cookie": "^3.0.3",
     "@vercel/otel": "^0.3.0",
@@ -49,7 +49,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "tailwind-merge": "^1.10.0",
-    "zod": "^3.21.4",
+    "zod": "^3.22.2",
     "zustand": "^4.4.1"
   },
   "devDependencies": {

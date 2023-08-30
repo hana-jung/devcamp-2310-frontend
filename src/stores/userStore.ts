@@ -1,7 +1,7 @@
 import Cookies from "js-cookie"
-import create, { SetState } from "zustand"
+import { create, SetState } from "zustand"
 import { devtools } from "zustand/middleware"
-import { ACCESS_TOKEN_EXPIRY_DAYS, REFRESH_TOKEN_EXPIRY_DAYS } from "../../config/authConfig"
+import { env } from "../../env.mjs"
 import { getLocalStorageValue, setLocalStorageValue } from "../../utils/storage"
 
 type User = {
@@ -26,11 +26,11 @@ const store = (set: SetState<UserStore>): UserStore => ({
   accessToken: Cookies.get("accessToken") || null,
   refreshToken: Cookies.get("refreshToken") || null,
   setAccessToken: (token) => {
-    Cookies.set("accessToken", token, { expires: ACCESS_TOKEN_EXPIRY_DAYS })
+    Cookies.set("accessToken", token, { expires: env.NEXT_PUBLIC_ACCESS_TOKEN_EXPIRY_DAYS })
     set({ accessToken: token })
   },
   setRefreshToken: (token) => {
-    Cookies.set("refreshToken", token, { expires: REFRESH_TOKEN_EXPIRY_DAYS })
+    Cookies.set("refreshToken", token, { expires: env.NEXT_PUBLIC_REFRESH_TOKEN_EXPIRY_DAYS })
     set({ refreshToken: token })
   },
   setUser: (user) => {
@@ -40,8 +40,8 @@ const store = (set: SetState<UserStore>): UserStore => ({
   setAll: (userData: { user: User; accessToken: string; refreshToken: string }) => {
     const { user, accessToken, refreshToken } = userData
     setLocalStorageValue("user", user)
-    Cookies.set("accessToken", accessToken, { expires: ACCESS_TOKEN_EXPIRY_DAYS })
-    Cookies.set("refreshToken", refreshToken, { expires: REFRESH_TOKEN_EXPIRY_DAYS })
+    Cookies.set("accessToken", accessToken, { expires: env.NEXT_PUBLIC_ACCESS_TOKEN_EXPIRY_DAYS })
+    Cookies.set("refreshToken", refreshToken, { expires: env.NEXT_PUBLIC_REFRESH_TOKEN_EXPIRY_DAYS })
     set({ user, accessToken, refreshToken })
   },
   logout: () => {
