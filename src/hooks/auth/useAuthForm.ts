@@ -1,8 +1,9 @@
 import { AxiosError } from "axios"
+import { useRouter } from "next/router"
 import { ChangeEvent, useState } from "react"
-import { ACCESS_TOKEN_EXPIRY_DAYS } from "../../config/authConfig"
-import Cookies from "js-cookie"
+import { useUserStore } from "../../stores/userStore"
 import { AuthResponse, ServerErrorResponse } from "../../types/apiResponse"
+import axiosInstance from "../../utils/httpClient"
 
 export type Values = {
   email: string
@@ -27,10 +28,13 @@ export function useAuthForm(
   validate: (values: Values) => ValidationErrors,
   url: string
 ): UseAuthForm {
+  const router = useRouter()
   const [values, setValues] = useState<Values>(initialValues)
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>({})
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [serverError, setServerError] = useState<string>("")
+
+  const { setUser, setAccessToken, setRefreshToken } = useUserStore.getState()
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -46,29 +50,20 @@ export function useAuthForm(
     if (Object.keys(validationErrors).length === 0) {
       setIsLoading(true)
       try {
-        // 실제 코드
-        // const response = await axios.post<AuthResponse>(url, values)
-        // 성공 시나리오를 흉내내기 위한 Promise
-        const response = await new Promise<{ data: AuthResponse }>((resolve) => {
-          setTimeout(() => {
-            resolve({
-              data: {
-                user: { name: "user123", email: "user123@example.com" },
-                accessToken: "fake-access-token",
-              },
-            })
-          }, 2000) // 1초 지연
-        })
-        // 실패 시나리오를 흉내내기 위한 Promise
-        // await new Promise((_, reject) => {
-        //   setTimeout(() => {
-        //     reject(new Error("Authentication failed"))
-        //   }, 1000) // 1초 지연
-        // })
+        const {
+          data: { user, accessToken, refreshToken },
+        } = await axiosInstance.post<AuthResponse>(url, values)
+        // resolve, reject를 통해 흉내낸 Promise
+        // const {
+        //   data: { user, accessToken, refreshToken },
+        // } = await mockResolve()
+        // mockReject()
 
-        localStorage.setItem("user", JSON.stringify(response.data.user))
-        Cookies.set("accessToken", response.data.accessToken, { expires: ACCESS_TOKEN_EXPIRY_DAYS })
-        window.location.href = "/"
+        setUser(user)
+        setAccessToken(accessToken)
+        setRefreshToken(refreshToken)
+
+        router.push(typeof router.query.next === "string" ? router.query.next : "/")
       } catch (err) {
         const axiosError = err as AxiosError<ServerErrorResponse>
         setServerError(axiosError.response?.data?.message || "에러 발생, 관리자에게 문의 바랍니다.")
@@ -81,4 +76,26 @@ export function useAuthForm(
   }
 
   return { handleChange, handleSubmit, values, validationErrors, serverError, isLoading }
+}
+
+const mockResolve = async () => {
+  return await new Promise<{ data: AuthResponse }>((resolve) => {
+    setTimeout(() => {
+      resolve({
+        data: {
+          user: { id: "userId", name: "user123", email: "user123@example.com" },
+          accessToken: "fake-access-token",
+          refreshToken: "fake-refresh-token",
+        },
+      })
+    }, 2000) // 1초 지연
+  })
+}
+
+const mockReject = async () => {
+  await new Promise((_, reject) => {
+    setTimeout(() => {
+      reject(new Error("Authentication failed"))
+    }, 1000) // 1초 지연
+  })
 }
