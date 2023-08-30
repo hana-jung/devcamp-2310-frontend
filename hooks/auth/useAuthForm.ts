@@ -31,7 +31,7 @@ export function useAuthForm(
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [serverError, setServerError] = useState<string>("")
 
-  const { setAll } = useUserStore.getState()
+  const { setUser, setAccessToken, setRefreshToken } = useUserStore.getState()
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -68,7 +68,10 @@ export function useAuthForm(
         //   }, 1000) // 1초 지연
         // })
 
-        setAll(response.data)
+        const { user, accessToken, refreshToken } = response.data
+        setUser(user)
+        setAccessToken(accessToken)
+        setRefreshToken(refreshToken)
 
         window.location.href = "/"
       } catch (err) {

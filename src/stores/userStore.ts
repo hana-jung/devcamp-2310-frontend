@@ -18,7 +18,6 @@ type UserStore = {
   setRefreshToken: (token: string) => void
   setUser: (user: User) => void
   logout: () => void
-  setAll: (userData: { user: User; accessToken: string; refreshToken: string }) => void
 }
 
 const store = (set: SetState<UserStore>): UserStore => ({
@@ -36,13 +35,6 @@ const store = (set: SetState<UserStore>): UserStore => ({
   setUser: (user) => {
     setLocalStorageValue("user", user)
     set({ user })
-  },
-  setAll: (userData: { user: User; accessToken: string; refreshToken: string }) => {
-    const { user, accessToken, refreshToken } = userData
-    setLocalStorageValue("user", user)
-    Cookies.set("accessToken", accessToken, { expires: env.NEXT_PUBLIC_ACCESS_TOKEN_EXPIRY_DAYS })
-    Cookies.set("refreshToken", refreshToken, { expires: env.NEXT_PUBLIC_REFRESH_TOKEN_EXPIRY_DAYS })
-    set({ user, accessToken, refreshToken })
   },
   logout: () => {
     localStorage.removeItem("user")
