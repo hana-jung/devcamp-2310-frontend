@@ -1,4 +1,4 @@
-export interface AuthResponse {
+export type AuthResponse = {
   user: {
     id: string
     name: string
@@ -8,6 +8,10 @@ export interface AuthResponse {
   refreshToken: string
 }
 
-export interface ServerErrorResponse {
+export type TokenRefreshResponse = {
+  accessToken: string
+}
+
+export type ServerErrorResponse = {
   message: string
 }

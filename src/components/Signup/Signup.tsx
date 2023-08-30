@@ -1,3 +1,4 @@
+import { AUTH_SIGNUP } from "../../constants/apiEndpoints"
 import { useAuthForm, Values } from "../../hooks/auth/useAuthForm"
 import { emailPattern, passwordPattern } from "../../utils/validationPatterns"
 
@@ -37,7 +38,7 @@ export default function Signup() {
   const { handleChange, handleSubmit, values, validationErrors, serverError, isLoading } = useAuthForm(
     { email: "", password: "", confirmPassword: "", username: "" },
     validate,
-    "/api/signup"
+    AUTH_SIGNUP
   )
 
   return (

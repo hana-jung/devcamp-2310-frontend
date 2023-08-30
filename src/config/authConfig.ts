@@ -1,2 +1,4 @@
-export const ACCESS_TOKEN_EXPIRY_DAYS = 1
-export const REFRESH_TOKEN_EXPIRY_DAYS = 7
+import { env } from "../../env.mjs"
+
+export const MAX_RETRY_COUNT = env.NEXT_PUBLIC_MAX_RETRY_COUNT
+export const TIMEOUT = env.NEXT_PUBLIC_TIMEOUT

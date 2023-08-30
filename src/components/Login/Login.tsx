@@ -1,3 +1,4 @@
+import { AUTH_LOGIN } from "../../constants/apiEndpoints"
 import { useAuthForm } from "../../hooks/auth/useAuthForm"
 import { emailPattern, passwordPattern } from "../../utils/validationPatterns"
 
@@ -24,7 +25,7 @@ export default function Login() {
   const { handleChange, handleSubmit, values, validationErrors, serverError, isLoading } = useAuthForm(
     { email: "", password: "" },
     validate,
-    "/api/login"
+    AUTH_LOGIN
   )
 
   return (

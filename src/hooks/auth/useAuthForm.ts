@@ -1,7 +1,9 @@
 import { AxiosError } from "axios"
+import { useRouter } from "next/router"
 import { ChangeEvent, useState } from "react"
 import { useUserStore } from "../../stores/userStore"
 import { AuthResponse, ServerErrorResponse } from "../../types/apiResponse"
+import axiosInstance from "../../utils/httpClient"
 
 export type Values = {
   email: string
@@ -26,6 +28,7 @@ export function useAuthForm(
   validate: (values: Values) => ValidationErrors,
   url: string
 ): UseAuthForm {
+  const router = useRouter()
   const [values, setValues] = useState<Values>(initialValues)
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>({})
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -47,32 +50,20 @@ export function useAuthForm(
     if (Object.keys(validationErrors).length === 0) {
       setIsLoading(true)
       try {
-        // 실제 코드
-        // const response = await axios.post<AuthResponse>(url, values)
-        // 성공 시나리오를 흉내내기 위한 Promise
-        const response = await new Promise<{ data: AuthResponse }>((resolve) => {
-          setTimeout(() => {
-            resolve({
-              data: {
-                user: { id: "userId", name: "user123", email: "user123@example.com" },
-                accessToken: "fake-access-token",
-                refreshToken: "fake-refresh-token",
-              },
-            })
-          }, 2000) // 1초 지연
-        })
-        // 실패 시나리오를 흉내내기 위한 Promise
-        // await new Promise((_, reject) => {
-        //   setTimeout(() => {
-        //     reject(new Error("Authentication failed"))
-        //   }, 1000) // 1초 지연
-        // })
+        const {
+          data: { user, accessToken, refreshToken },
+        } = await axiosInstance.post<AuthResponse>(url, values)
+        // resolve, reject를 통해 흉내낸 Promise
+        // const {
+        //   data: { user, accessToken, refreshToken },
+        // } = await mockResolve()
+        // mockReject()
 
-        const { user, accessToken, refreshToken } = response.data
         setUser(user)
         setAccessToken(accessToken)
         setRefreshToken(refreshToken)
 
+        router.push("/") // TODO: next=... query param이 있으면 해당 경로로 이동
         window.location.href = "/"
       } catch (err) {
         const axiosError = err as AxiosError<ServerErrorResponse>
@@ -86,4 +77,26 @@ export function useAuthForm(
   }
 
   return { handleChange, handleSubmit, values, validationErrors, serverError, isLoading }
+}
+
+const mockResolve = async () => {
+  return await new Promise<{ data: AuthResponse }>((resolve) => {
+    setTimeout(() => {
+      resolve({
+        data: {
+          user: { id: "userId", name: "user123", email: "user123@example.com" },
+          accessToken: "fake-access-token",
+          refreshToken: "fake-refresh-token",
+        },
+      })
+    }, 2000) // 1초 지연
+  })
+}
+
+const mockReject = async () => {
+  await new Promise((_, reject) => {
+    setTimeout(() => {
+      reject(new Error("Authentication failed"))
+    }, 1000) // 1초 지연
+  })
 }
