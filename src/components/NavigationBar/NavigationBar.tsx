@@ -1,4 +1,4 @@
-import useAuthButton from "../../../hooks/auth/useAuthButton"
+import useAuthButton from "../../hooks/auth/useAuthButton"
 import Logo from "../Logo/Logo"
 
 interface NavigationBarProps {

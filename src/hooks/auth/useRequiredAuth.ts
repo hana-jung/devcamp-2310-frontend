@@ -1,6 +1,6 @@
 import { useRouter } from "next/router"
 import { useEffect } from "react"
-import { useUserStore } from "../../src/stores/userStore"
+import { useUserStore } from "../../stores/userStore"
 
 const useRequireAuth = () => {
   const { user } = useUserStore()

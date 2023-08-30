@@ -1,6 +1,6 @@
 import { AxiosError } from "axios"
 import { ChangeEvent, useState } from "react"
-import { useUserStore } from "../../src/stores/userStore"
+import { useUserStore } from "../../stores/userStore"
 import { AuthResponse, ServerErrorResponse } from "../../types/apiResponse"
 
 export type Values = {

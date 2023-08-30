@@ -2,7 +2,7 @@ import Cookies from "js-cookie"
 import { create, SetState } from "zustand"
 import { devtools } from "zustand/middleware"
 import { env } from "../../env.mjs"
-import { getLocalStorageValue, setLocalStorageValue } from "../../utils/storage"
+import { getLocalStorageValue, setLocalStorageValue } from "../utils/storage"
 
 type User = {
   id: string
