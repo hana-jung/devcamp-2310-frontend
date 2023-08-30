@@ -63,8 +63,7 @@ export function useAuthForm(
         setAccessToken(accessToken)
         setRefreshToken(refreshToken)
 
-        router.push("/") // TODO: next=... query param이 있으면 해당 경로로 이동
-        window.location.href = "/"
+        router.push(typeof router.query.next === "string" ? router.query.next : "/")
       } catch (err) {
         const axiosError = err as AxiosError<ServerErrorResponse>
         setServerError(axiosError.response?.data?.message || "에러 발생, 관리자에게 문의 바랍니다.")

@@ -8,7 +8,8 @@ const useRequireAuth = () => {
 
   useEffect(() => {
     if (!user) {
-      router.push("/login")
+      const currentPath = router.asPath
+      router.push(`/login?next=${encodeURIComponent(currentPath)}`)
     }
   }, [user, router])
 }
