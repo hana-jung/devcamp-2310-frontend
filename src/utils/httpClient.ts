@@ -1,5 +1,6 @@
-import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios"
+import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios"
 import Cookies from "js-cookie"
+import _ from "lodash"
 import { v4 as uuidv4 } from "uuid"
 import { MAX_RETRY_COUNT, TIMEOUT } from "../config/authConfig"
 import { API_BASE_URL, AUTH_REFRESH } from "../constants/apiEndpoints"
@@ -12,6 +13,11 @@ const axiosInstance: AxiosInstance = axios.create({
   timeout: TIMEOUT,
 })
 
+const DEBOUNCE_TIME = 300
+const debounceRequest = _.debounce((config: AxiosRequestConfig, resolve: any, reject: any) => {
+  axios(config).then(resolve).catch(reject)
+}, DEBOUNCE_TIME)
+
 axiosInstance.interceptors.request.use((config) => {
   const token = Cookies.get("accessToken")
   config.headers.Authorization = token ? `Bearer ${token}` : ""
@@ -21,7 +27,9 @@ axiosInstance.interceptors.request.use((config) => {
 
   retryCountMap.set(reqId, { count: 0, timestamp: Date.now() })
 
-  return config
+  return new Promise((resolve, reject) => {
+    debounceRequest(config, resolve, reject)
+  })
 })
 
 const retryCountMap = new Map<string, { count: number; timestamp: number }>()

@@ -16,7 +16,7 @@ export type DiscountStore = {
   appliedPoints: number
   applyCoupon: (id: string) => void
   removeCoupon: () => void
-  applyPoints: (points: number) => void
+  applyPoints: (points: number, totalPrice: number) => void
   removePoints: () => void
   calculateDiscount: (totalPrice: number) => void
   setIssuedCoupons: (coupons: IssuedCoupon[]) => void

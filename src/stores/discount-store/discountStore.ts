@@ -32,11 +32,11 @@ const store = (set: SetState<DiscountStore>): DiscountStore => ({
     }))
   },
 
-  applyPoints: (points: number) => {
+  applyPoints: (points: number, totalPrice: number) => {
     set((state) => {
       return {
         ...state,
-        appliedPoints: Math.min(points, state.availablePoints),
+        appliedPoints: Math.min(points, state.availablePoints, totalPrice),
       }
     })
   },
