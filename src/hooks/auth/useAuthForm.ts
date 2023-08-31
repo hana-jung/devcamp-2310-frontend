@@ -1,7 +1,7 @@
 import { AxiosError } from "axios"
 import { useRouter } from "next/router"
 import { ChangeEvent, useState } from "react"
-import { useUserStore } from "../../stores/userStore"
+import { useUserStore } from "../../stores/user-store/userStore"
 import { AuthResponse, ServerErrorResponse } from "../../types/apiResponse"
 import axiosInstance from "../../utils/httpClient"
 

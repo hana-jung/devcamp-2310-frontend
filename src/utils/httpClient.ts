@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid"
 import { MAX_RETRY_COUNT, TIMEOUT } from "../config/authConfig"
 import { API_BASE_URL, AUTH_REFRESH } from "../constants/apiEndpoints"
 import { RETRY_TTL } from "../constants/network"
-import { useUserStore } from "../stores/userStore"
+import { useUserStore } from "../stores/user-store/userStore"
 import { TokenRefreshResponse } from "../types/apiResponse"
 
 const axiosInstance: AxiosInstance = axios.create({
