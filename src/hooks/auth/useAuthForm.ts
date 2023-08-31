@@ -1,9 +1,8 @@
 import { AxiosError } from "axios"
 import { useRouter } from "next/router"
 import { ChangeEvent, useState } from "react"
-import { useUserStore } from "../../stores/userStore"
+import { useUserStore } from "../../stores/user-store/userStore"
 import { AuthResponse, ServerErrorResponse } from "../../types/apiResponse"
-import axiosInstance from "../../utils/httpClient"
 
 export type Values = {
   email: string
@@ -50,13 +49,13 @@ export function useAuthForm(
     if (Object.keys(validationErrors).length === 0) {
       setIsLoading(true)
       try {
-        const {
-          data: { user, accessToken, refreshToken },
-        } = await axiosInstance.post<AuthResponse>(url, values)
-        // resolve, reject를 통해 흉내낸 Promise
         // const {
         //   data: { user, accessToken, refreshToken },
-        // } = await mockResolve()
+        // } = await axiosInstance.post<AuthResponse>(url, values)
+        // resolve, reject를 통해 흉내낸 Promise
+        const {
+          data: { user, accessToken, refreshToken },
+        } = await mockResolve()
         // mockReject()
 
         setUser(user)
