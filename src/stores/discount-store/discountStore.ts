@@ -1,6 +1,7 @@
 import { create } from "zustand"
 import type { StateCreator } from "zustand"
 import { devtools } from "zustand/middleware"
+import { immer } from "zustand/middleware/immer"
 import type { DiscountStore, IssuedCoupon } from "./types/discountStore.types"
 
 const store: StateCreator<DiscountStore> = (set) => ({
@@ -19,34 +20,30 @@ const store: StateCreator<DiscountStore> = (set) => ({
         return state
       }
 
-      return {
-        ...state,
-        appliedCoupon: coupon,
-      }
+      state.appliedCoupon = coupon
+      return state
     })
   },
 
   removeCoupon: () => {
-    set((state) => ({
-      ...state,
-      appliedCoupon: undefined,
-    }))
+    set((state) => {
+      state.appliedCoupon = undefined
+      return state
+    })
   },
 
   applyPoints: (points: number, totalPrice: number) => {
     set((state) => {
-      return {
-        ...state,
-        appliedPoints: Math.min(points, state.availablePoints, totalPrice),
-      }
+      state.appliedPoints = Math.min(points, state.availablePoints, totalPrice)
+      return state
     })
   },
 
   removePoints: () => {
-    set((state) => ({
-      ...state,
-      appliedPoints: 0,
-    }))
+    set((state) => {
+      state.appliedPoints = 0
+      return state
+    })
   },
 
   calculateDiscount: (totalPrice: number) => {
@@ -66,25 +63,28 @@ const store: StateCreator<DiscountStore> = (set) => ({
             ? Math.min(state.appliedCoupon.discountAmount, upperBound)
             : (upperBound * state.appliedCoupon.discountAmount) / 100
       }
+      state.totalDiscountAmount = discount
 
-      return { ...state, totalDiscountAmount: discount }
+      return state
     })
   },
 
   setIssuedCoupons: (coupons: IssuedCoupon[]) => {
-    set((state) => ({
-      ...state,
-      issuedCoupons: coupons,
-    }))
+    set((state) => {
+      state.issuedCoupons = coupons
+      return state
+    })
   },
 
   setAvailablePoints: (points: number) => {
-    set((state) => ({
-      ...state,
-      availablePoints: points,
-    }))
+    set((state) => {
+      state.availablePoints = points
+      return state
+    })
   },
 })
 
 export const useDiscountStore =
-  process.env.NODE_ENV !== "production" ? create<DiscountStore>()(devtools(store)) : create<DiscountStore>()(store)
+  process.env.NODE_ENV !== "production"
+    ? create<DiscountStore>()(devtools(immer(store)))
+    : create<DiscountStore>()(immer(store))

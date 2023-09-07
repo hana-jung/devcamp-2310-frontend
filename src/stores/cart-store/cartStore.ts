@@ -1,6 +1,7 @@
 import { create } from "zustand"
 import type { StateCreator } from "zustand"
 import { devtools } from "zustand/middleware"
+import { immer } from "zustand/middleware/immer"
 import type { CartStore } from "./types/cartStore.types"
 
 const store: StateCreator<CartStore> = (set) => ({
@@ -9,53 +10,52 @@ const store: StateCreator<CartStore> = (set) => ({
 
   addItem: (item, quantity = 1) => {
     set((state) => {
-      const newState = { ...state }
       const existingItemIndex = state.cartItems.findIndex((cartItem) => cartItem.id === item.id)
       if (existingItemIndex > -1) {
-        newState.cartItems[existingItemIndex].quantity += quantity
+        state.cartItems[existingItemIndex].quantity += quantity
       } else {
-        newState.cartItems.push({ ...item, quantity })
+        state.cartItems.push({ ...item, quantity })
       }
-      newState.totalAmount += item.price * quantity
+      state.totalAmount += item.price * quantity
 
-      return newState
+      return state
     })
   },
 
   removeItem: (id: string) => {
     set((state) => {
-      const newState = { ...state }
       const existingItemIndex = state.cartItems.findIndex((cartItem) => cartItem.id === id)
       if (existingItemIndex > -1) {
-        newState.totalAmount -= state.cartItems[existingItemIndex].price * state.cartItems[existingItemIndex].quantity
-        newState.cartItems.splice(existingItemIndex, 1)
+        state.totalAmount -= state.cartItems[existingItemIndex].price * state.cartItems[existingItemIndex].quantity
+        state.cartItems.splice(existingItemIndex, 1)
       }
-      return newState
+      return state
     })
   },
 
   updateQuantity: (id: string, quantity: number) => {
     set((state) => {
-      const newState = { ...state }
       const existingItemIndex = state.cartItems.findIndex((cartItem) => cartItem.id === id)
       if (existingItemIndex > -1 && quantity >= 0) {
-        newState.totalAmount +=
-          (quantity - newState.cartItems[existingItemIndex].quantity) * newState.cartItems[existingItemIndex].price
-        newState.cartItems[existingItemIndex].quantity = quantity
+        state.totalAmount +=
+          (quantity - state.cartItems[existingItemIndex].quantity) * state.cartItems[existingItemIndex].price
+        state.cartItems[existingItemIndex].quantity = quantity
       }
-      return newState
+      return state
     })
   },
 
   clearCart: () => {
-    set(() => {
-      return {
-        cartItems: [],
-        totalAmount: 0,
-      }
+    set((state) => {
+      state.cartItems = []
+      state.totalAmount = 0
+
+      return state
     })
   },
 })
 
 export const useCartStore =
-  process.env.NODE_ENV !== "production" ? create<CartStore>()(devtools(store)) : create<CartStore>()(store)
+  process.env.NODE_ENV !== "production"
+    ? create<CartStore>()(devtools(immer(store)))
+    : create<CartStore>()(immer(store))
