@@ -1,8 +1,9 @@
-import { create, SetState } from "zustand"
+import { create } from "zustand"
+import type { StateCreator } from "zustand"
 import { devtools } from "zustand/middleware"
-import { CartStore } from "./types/cartStore.types"
+import type { CartStore } from "./types/cartStore.types"
 
-const store = (set: SetState<CartStore>): CartStore => ({
+const store: StateCreator<CartStore> = (set) => ({
   cartItems: [],
   totalAmount: 0,
 

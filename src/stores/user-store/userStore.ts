@@ -1,11 +1,12 @@
 import Cookies from "js-cookie"
-import { create, SetState } from "zustand"
+import { create } from "zustand"
+import type { StateCreator } from "zustand"
 import { devtools } from "zustand/middleware"
-import { User, UserStore } from "./types/userStore.types"
+import type { User, UserStore } from "./types/userStore.types"
 import { env } from "../../../env.mjs"
 import { getLocalStorageValue, setLocalStorageValue } from "../../utils/storage"
 
-const store = (set: SetState<UserStore>): UserStore => ({
+const store: StateCreator<UserStore> = (set) => ({
   user: getLocalStorageValue<User | null>("user", null),
   accessToken: Cookies.get("accessToken") || null,
   refreshToken: Cookies.get("refreshToken") || null,

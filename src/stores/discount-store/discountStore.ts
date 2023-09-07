@@ -1,8 +1,9 @@
-import { create, SetState } from "zustand"
+import { create } from "zustand"
+import type { StateCreator } from "zustand"
 import { devtools } from "zustand/middleware"
-import { DiscountStore, IssuedCoupon } from "./types/discountStore.types"
+import type { DiscountStore, IssuedCoupon } from "./types/discountStore.types"
 
-const store = (set: SetState<DiscountStore>): DiscountStore => ({
+const store: StateCreator<DiscountStore> = (set) => ({
   issuedCoupons: [], // fetched from the server
   appliedCoupon: undefined,
   availablePoints: 0, // fetched from the server
