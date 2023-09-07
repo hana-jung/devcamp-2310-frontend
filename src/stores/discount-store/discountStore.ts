@@ -85,4 +85,5 @@ const store = (set: SetState<DiscountStore>): DiscountStore => ({
   },
 })
 
-export const useDiscountStore = create(process.env.NODE_ENV !== "production" ? devtools(store) : store)
+export const useDiscountStore =
+  process.env.NODE_ENV !== "production" ? create<DiscountStore>()(devtools(store)) : create<DiscountStore>()(store)

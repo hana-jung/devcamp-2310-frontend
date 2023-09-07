@@ -29,4 +29,5 @@ const store = (set: SetState<UserStore>): UserStore => ({
   },
 })
 
-export const useUserStore = create(process.env.NODE_ENV !== "production" ? devtools(store) : store)
+export const useUserStore =
+  process.env.NODE_ENV !== "production" ? create<UserStore>()(devtools(store)) : create<UserStore>()(store)

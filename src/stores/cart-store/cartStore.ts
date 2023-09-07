@@ -56,4 +56,5 @@ const store = (set: SetState<CartStore>): CartStore => ({
   },
 })
 
-export const useCartStore = create(process.env.NODE_ENV !== "production" ? devtools(store) : store)
+export const useCartStore =
+  process.env.NODE_ENV !== "production" ? create<CartStore>()(devtools(store)) : create<CartStore>()(store)
