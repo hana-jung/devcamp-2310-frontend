@@ -31,23 +31,7 @@ module.exports = {
         },
       },
       fontFamily: {
-        body: [
-          "Inter",
-          "ui-sans-serif",
-          "system-ui",
-          "-apple-system",
-          "system-ui",
-          "Segoe UI",
-          "Roboto",
-          "Helvetica Neue",
-          "Arial",
-          "Noto Sans",
-          "sans-serif",
-          "Apple Color Emoji",
-          "Segoe UI Emoji",
-          "Segoe UI Symbol",
-          "Noto Color Emoji",
-        ],
+        pretendard: ["Pretendard-Regular", "sans-serif"],
         sans: [
           "Inter",
           "ui-sans-serif",
@@ -74,6 +58,15 @@ module.exports = {
         4: "4px",
         6: "6px",
         8: "8px",
+      },
+      borderColor: {
+        navy: "var(--navy01, #E3E8EE)",
+      },
+      borderRadius: {
+        30: "30px",
+      },
+      backgroundImage: {
+        "purple-gradient": "linear-gradient(270deg, #5F68FC -1.26%, #D071FF 109.15%)",
       },
       minHeight: {
         ...defaultTheme.height,

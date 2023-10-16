@@ -1,5 +1,3 @@
-import { IssuedCoupon } from "../stores/discount-store/types/discountStore.types"
-
 export type AuthResponse = {
   user: {
     id: string
@@ -20,8 +18,4 @@ export type ServerErrorResponse = {
 
 export type PointsResponse = {
   availablePoints: number
-}
-
-export type CouponsResponse = {
-  issuedCoupons: IssuedCoupon[]
 }
