@@ -1,18 +1,17 @@
-export type User = {
+export type Member = {
   email: string
-  password?: string
-  confirmpassword?: string
+  password: string
   nickname: string
-  notification?: boolean
-  role?: string
+  notification: boolean
 }
 
-export type UserStore = {
-  user: User | null
+export type MemberStore = {
+  user: Member | null
   accessToken: string | null
   refreshToken: string | null
+  setUser: (user: Member) => void
   setAccessToken: (token: string) => void
   setRefreshToken: (token: string) => void
-  setUser: (user: User) => void
+  // getCookieStoredValue: (key: string) => void
   logout: () => void
 }

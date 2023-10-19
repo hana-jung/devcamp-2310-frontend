@@ -7,8 +7,10 @@ import { AuthResponse, ServerErrorResponse } from "../../types/apiResponse"
 export type Values = {
   email: string
   password: string
-  confirmPassword?: string
-  username?: string
+  confirmpassword?: string
+  nickname?: string
+  notification: boolean
+  role: string
 }
 
 export type ValidationErrors = Partial<Values>
@@ -82,7 +84,14 @@ const mockResolve = async () => {
     setTimeout(() => {
       resolve({
         data: {
-          user: { id: "userId", name: "user123", email: "user123@example.com" },
+          user: {
+            nickname: "user123",
+            email: "user123@example.com",
+            password: "Aa12345",
+            confirmpassword: "Aa12345",
+            notification: false,
+            role: "user",
+          },
           accessToken: "fake-access-token",
           refreshToken: "fake-refresh-token",
         },

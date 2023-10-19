@@ -6,3 +6,5 @@ export const API_BASE_URL = env.NEXT_PUBLIC_API_BASE_URL
 export const AUTH_LOGIN = "/auth/login"
 export const AUTH_SIGNUP = "/auth/signup"
 export const AUTH_REFRESH = "/auth/refresh"
+
+export const EMAIL_REGISTER = "/register/email-register"
