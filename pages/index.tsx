@@ -17,7 +17,7 @@ export default function Web() {
         <div className="flex flex-col items-center justify-center">
           <button className="btn-main mb-[15.71px] bg-purple-gradient">지금 신청하기</button>
           <button className="btn-main h-[56.25px] border border-[#B3B7BA] bg-transparent pb-[14.25px] pl-[29px] pr-[33.25px] pt-[12px] text-base font-medium text-[#F2F4F7]">
-            혜택...이게 끝인가요?
+            혜택...이게 끝인가요??
           </button>
         </div>
       </main>
