@@ -37,6 +37,7 @@
     "@semantic-release/github": "^9.0.0",
     "@semantic-release/npm": "^10.0.3",
     "@semantic-release/release-notes-generator": "^11.0.1",
+    "@svgr/webpack": "^8.1.0",
     "@t3-oss/env-nextjs": "^0.6.1",
     "@types/axios": "^0.14.0",
     "@types/js-cookie": "^3.0.3",

@@ -1,5 +1,5 @@
-import {createEnv} from "@t3-oss/env-nextjs"
-import {z} from "zod"
+import { createEnv } from "@t3-oss/env-nextjs"
+import { z } from "zod"
 
 export const env = createEnv({
   server: {
@@ -9,12 +9,12 @@ export const env = createEnv({
       .transform((value) => value === "true"),
   },
   client: {
-    NEXT_PUBLIC_ACCESS_TOKEN_EXPIRY_DAYS: z.string().transform(value => parseInt(value, 10)),
-    NEXT_PUBLIC_REFRESH_TOKEN_EXPIRY_DAYS: z.string().transform(value => parseInt(value, 10)),
+    NEXT_PUBLIC_ACCESS_TOKEN_EXPIRY_DAYS: z.string().transform((value) => parseInt(value, 10)),
+    NEXT_PUBLIC_REFRESH_TOKEN_EXPIRY_DAYS: z.string().transform((value) => parseInt(value, 10)),
     NEXT_PUBLIC_API_BASE_URL: z.string(),
-    NEXT_PUBLIC_MAX_RETRY_COUNT: z.string().transform(value => parseInt(value, 10)),
-    NEXT_PUBLIC_TIMEOUT: z.string().transform(value => parseInt(value, 10)),
-    NEXT_PUBLIC_RETRY_TTL: z.string().transform(value => parseInt(value, 10)),
+    NEXT_PUBLIC_MAX_RETRY_COUNT: z.string().transform((value) => parseInt(value, 10)),
+    NEXT_PUBLIC_TIMEOUT: z.string().transform((value) => parseInt(value, 10)),
+    NEXT_PUBLIC_RETRY_TTL: z.string().transform((value) => parseInt(value, 10)),
   },
   runtimeEnv: {
     ANALYZE: process.env.ANALYZE,
@@ -24,5 +24,7 @@ export const env = createEnv({
     NEXT_PUBLIC_MAX_RETRY_COUNT: process.env.NEXT_PUBLIC_MAX_RETRY_COUNT,
     NEXT_PUBLIC_TIMEOUT: process.env.NEXT_PUBLIC_TIMEOUT,
     NEXT_PUBLIC_RETRY_TTL: process.env.NEXT_PUBLIC_RETRY_TTL,
+    NEXT_PUBLIC_KAKAO_REST_API_KEY: process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY,
+    NEXT_PUBLIC_KAKAO_REDIRECT_URI: process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI,
   },
 })
