@@ -1,7 +1,8 @@
 import React from "react"
+import KaKao from "src/components/Redirect/KaKao"
 
 const kakao = () => {
-  return <div>kakao 로그인 리다이렉트 페이지</div>
+  return <KaKao />
 }
 
 export default kakao
