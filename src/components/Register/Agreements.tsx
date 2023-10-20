@@ -14,10 +14,7 @@ const Agreements = () => {
         <h1>약관 동의</h1>
       </header>
       {error && <p>{error}</p>}
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col items-center justify-center gap-y-[10px] px-6 pb-[160px] align-middle"
-      >
+      <div className="flex flex-col items-center justify-center gap-y-[10px] px-6 pb-[160px] align-middle">
         <input
           type="checkbox"
           onChange={handleAllAgreementCheck}
@@ -105,13 +102,13 @@ const Agreements = () => {
           </label>
         </div>
         <button
-          type="submit"
+          onClick={handleSubmit}
           className="w-[296px] rounded-[4px] bg-[#393F7B] py-[14px] text-white"
           disabled={isLoading}
         >
           다음
         </button>
-      </form>
+      </div>
     </main>
   )
 }
