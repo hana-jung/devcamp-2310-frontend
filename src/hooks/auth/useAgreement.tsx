@@ -1,6 +1,7 @@
 import { AxiosError } from "axios"
 import { useRouter } from "next/router"
 import React, { useState } from "react"
+import { instance } from "src/axios/axios"
 import { signUpValuesStore } from "src/stores/member-store/types/signup-values-store"
 import { useUserStore } from "src/stores/user-store/userStore"
 import { AuthResponse, ServerErrorResponse } from "src/types/apiResponse"
@@ -62,7 +63,7 @@ const useAgreement = () => {
       setIsLoading(true)
 
       try {
-        const reponse = await axiosInstance.post("/auth/signup", userInfo)
+        const reponse = await instance.post("/auth/signup", userInfo)
         const { user, accessToken, refreshToken } = reponse.data
         setUser(user)
         setAccessToken(accessToken)
