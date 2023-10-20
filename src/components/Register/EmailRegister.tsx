@@ -1,59 +1,21 @@
 import Image from "next/image"
-import { useRouter } from "next/router"
-import React, { useState } from "react"
+import React from "react"
 import AppleLogin from "src/components/Login/AppleLogin"
 import GoogleLogin from "src/components/Login/GoogleLogin"
 import KakaoLogin from "src/components/Login/KakaoLogin"
 import useRegisterAuthForm from "src/hooks/auth/useRegisterAuthForm"
 import { signUpValuesStore } from "src/stores/member-store/types/signup-values-store"
 
-type ValuesType = {
-  email: string
-  password: string
-  nickname: string
-  confirmpassword: string
-}
-
 const EmailRegister = () => {
-  const router = useRouter()
-  const [snsToggle, setSnsToggle] = useState(false)
-  const handleSnsToggle = () => {
-    setSnsToggle((prev) => !prev)
-  }
-
-  const { handleChangeUserValues, validationField } = useRegisterAuthForm()
-  const { email, password, confirmpassword, nickname, errors, setErrors } = signUpValuesStore()
-
-  console.log(email, password, confirmpassword, nickname)
-
-  const handleNextClick = (e: React.FormEvent) => {
-    e.preventDefault()
-
-    const errors = validationField({ email, password, confirmpassword, nickname })
-    setErrors(errors)
-    console.log("errors", errors)
-    // validation
-    // validation을 통과한다면 다음 페이지로 이동
-    if (Object.values(errors).every((error) => error === "")) {
-      console.log("pass all vali")
-      router.push("/register/agreements")
-    } else {
-      console.log("validation errors ", errors)
-      return
-    }
-  }
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    handleChangeUserValues(name as keyof ValuesType, value)
-  }
+  const { email, password, confirmpassword, nickname, errors } = signUpValuesStore()
+  const { snsToggle, handleSnsToggle, handleChangeValues, handleValidateError } = useRegisterAuthForm()
 
   return (
     <main className="h-auto w-[375px] bg-white">
       <nav className="h-[56px] w-full border-b border-navy"></nav>
       <div className="flex flex-col items-center justify-center px-[42px] pb-[86px]">
         <section>
-          <form noValidate className="flex flex-col items-center justify-center">
+          <form noValidate onSubmit={handleValidateError} className="flex flex-col items-center justify-center">
             <header className="mr-1 pt-[42px] text-center text-[22px] font-bold leading-7">
               <h1>회원가입</h1>
             </header>
@@ -71,7 +33,7 @@ const EmailRegister = () => {
                     name="nickname"
                     type="text"
                     value={nickname}
-                    onChange={handleInputChange}
+                    onChange={handleChangeValues}
                     className="w-[176px] text-base placeholder:translate-y-[2px]  placeholder:text-base"
                     placeholder="닉네임을 입력해주세요."
                     required
@@ -93,7 +55,7 @@ const EmailRegister = () => {
                     name="email"
                     type="email"
                     value={email}
-                    onChange={handleInputChange}
+                    onChange={handleChangeValues}
                     className="w-[176px] text-base placeholder:translate-y-[2px] placeholder:text-base"
                     placeholder="이메일 주소를 입력해주세요."
                     required
@@ -115,7 +77,7 @@ const EmailRegister = () => {
                     name="password"
                     type="password"
                     value={password}
-                    onChange={handleInputChange}
+                    onChange={handleChangeValues}
                     className="w-[176px] text-base placeholder:translate-y-[2px] placeholder:text-base"
                     placeholder="비밀번호를 입력해주세요."
                     required
@@ -137,7 +99,7 @@ const EmailRegister = () => {
                     name="confirmpassword"
                     type="password"
                     value={confirmpassword}
-                    onChange={handleInputChange}
+                    onChange={handleChangeValues}
                     className="w-[190px] text-base placeholder:translate-y-[2px] placeholder:text-base"
                     placeholder="비밀번호를 다시 입력해주세요."
                     required
@@ -149,8 +111,13 @@ const EmailRegister = () => {
                     <span>{errors.confirmpassword}</span>
                   </div>
                 )}
+                {password && confirmpassword && password.trim() === confirmpassword.trim() ? (
+                  <p>비밀번호가 일치합니다</p>
+                ) : (
+                  ""
+                )}
                 <button
-                  onClick={handleNextClick}
+                  type="submit"
                   className="mt-[33px] w-full translate-y-[3px] rounded-[4px] bg-[#393F7B] py-[15px] text-[15px] font-bold text-white"
                 >
                   다음
