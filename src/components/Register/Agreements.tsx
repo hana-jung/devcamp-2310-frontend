@@ -105,7 +105,7 @@ const Agreements = () => {
           </label>
         </div>
         <button
-          type="button"
+          type="submit"
           className="w-[296px] rounded-[4px] bg-[#393F7B] py-[14px] text-white"
           disabled={isLoading}
         >
