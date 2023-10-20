@@ -47,7 +47,8 @@ const useAgreement = () => {
 
   const { email, nickname, password, confirmpassword, role, notification } = signUpValuesStore()
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
+    e.preventDefault()
     const userInfo = {
       email,
       password,
@@ -70,6 +71,7 @@ const useAgreement = () => {
         router.replace(typeof router.query.next === "string" ? router.query.next : "/")
       } catch (error) {
         // 서버에러
+        console.log("error", error)
         const axiosError = error as AxiosError<ServerErrorResponse>
         setServerError(axiosError.response?.data.message || "관리자에게 문의해주세요.")
       } finally {
