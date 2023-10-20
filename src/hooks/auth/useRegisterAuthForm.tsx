@@ -6,76 +6,54 @@ import { SignupValuesState, signUpValuesStore } from "src/stores/member-store/ty
 import { AuthenticationResponse, ServerErrorResponse } from "src/types/apiResponse"
 import { emailPattern, passwordPattern } from "src/utils/validationPatterns"
 
-type ValuesType = {
-  email: string
-  password: string
-  confirmpassword: string
-  nickname: string
-}
-
-type ErrorType = {
-  email: string
-  password: string
-  confirmpassword: string
-  nickname: string
-}
-
 const useRegisterAuthForm = () => {
-  const { email, password, confirmpassword, nickname, setMultipleValues, setErrors } = signUpValuesStore()
-  const [values, setValues] = useState<ValuesType>({
-    email: "",
-    nickname: "",
-    password: "",
-    confirmpassword: "",
-  })
-
-  // const validationErrors = (values: ValuesType): Partial<SignupValuesState["errors"]> => {
-  //   const errors: Partial<SignupValuesState["errors"]> = {}
-  //   if (!values.nickname || values.nickname.length < 3) {
-  //     errors.nickname = "사용할 수 없는 닉네임입니다."
-  //   }
-  //   if (!emailPattern.test(values.email) || !values.email) {
-  //     errors.email = "올바른 이메일 주소를 입력해주세요."
-  //   }
-  //   if (!passwordPattern.test(values.password) || !values.password) {
-  //     errors.password = "올바른 비밀번호를 입력해주세요."
-  //   }
-  //   if (password !== confirmpassword) {
-  //     errors.confirmpassword = "비밀번호가 일치하지 않습니다."
-  //   }
-
-  //   return errors
-  // }
-
-  const validationField = (values: ValuesType): ErrorType => {
-    console.log("values", values)
-    const errors: ErrorType = { email: "", password: "", confirmpassword: "", nickname: "" }
-    if (!values.email || !emailPattern.test(values.email)) {
-      errors.email = "올바른 이메일 주소를 입력해주세요."
-    }
-    if (!values.nickname || values.nickname.length < 3) {
-      errors.nickname = "사용할 수 없는 닉네임입니다."
-    }
-    if (!passwordPattern.test(values.password)) {
-      errors.password = "올바른 비밀번호를 입력해주세요."
-    }
-    if (values.confirmpassword !== values.password) {
-      errors.confirmpassword = "비밀번호가 일치하지 않습니다."
-    }
-    return errors
+  const router = useRouter()
+  const [snsToggle, setSnsToggle] = useState(false)
+  const handleSnsToggle = () => {
+    setSnsToggle((prev) => !prev)
   }
 
-  const handleChangeUserValues = (name: keyof ValuesType, value: string) => {
+  const { email, password, confirmpassword, nickname, errors, setMultipleValues, setErrors } = signUpValuesStore()
+
+  const handleChangeValues = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
     setMultipleValues({ [name]: value })
+    setErrors({ [name]: null })
   }
 
+  const handleValidateError = (e: React.FormEvent) => {
+    e.preventDefault()
+
+    const newValidateErrors = {
+      email: "",
+      password: "",
+      nickname: "",
+      confirmpassword: "",
+    }
+
+    if (!email || !emailPattern.test(email)) {
+      newValidateErrors.email = "올바른 이메일 주소를 입력해주세요."
+    }
+    if (!nickname || nickname.length < 3) {
+      newValidateErrors.nickname = "사용할 수 없는 닉네임입니다."
+    }
+    if (!password || !passwordPattern.test(password)) {
+      newValidateErrors.password = "올바른 비밀번호를 입력해주세요."
+    }
+    if (confirmpassword !== password) {
+      newValidateErrors.confirmpassword = "비밀번호가 일치하지 않습니다."
+    }
+    setErrors(newValidateErrors)
+
+    if (Object.values(newValidateErrors).every((error) => error === "")) {
+      router.push("/register/agreements")
+    }
+  }
   return {
-    handleChangeUserValues,
-    validationField,
-    email,
-    nickname,
-    password,
-    confirmpassword,
+    snsToggle,
+    handleSnsToggle,
+    handleChangeValues,
+    handleValidateError,
   }
 }
 
@@ -90,12 +68,9 @@ const mockResolve = async () => {
             nickname: "userId",
             email: "user123@example.com",
             password: "123443432",
-            confirmpassword: "123443432",
             notification: true,
             role: "user",
           },
-          accessToken: "fake-access-token",
-          refreshToken: "fake-refresh-token",
         },
       })
     }, 2000) // 1초 지연
