@@ -47,8 +47,8 @@ const useAgreement = () => {
 
   const { email, nickname, password, confirmpassword, role, notification } = signUpValuesStore()
 
-  const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
-    e.preventDefault()
+  const handleSubmit = async () => {
+    // e.preventDefault()
     const userInfo = {
       email,
       password,
