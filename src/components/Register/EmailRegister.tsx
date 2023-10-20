@@ -138,6 +138,7 @@ const EmailRegister = () => {
                   <>
                     <KakaoLogin />
                     <button
+                      type="button"
                       onClick={handleSnsToggle}
                       className="mb-[-24px] mt-[6px] w-full translate-y-[10px] rounded-[4px] bg-black px-5 pb-[14px] pt-[15px] text-[15px] font-bold text-white"
                     >
