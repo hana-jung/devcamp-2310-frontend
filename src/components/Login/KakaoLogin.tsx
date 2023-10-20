@@ -7,7 +7,7 @@ const KakaoLogin = () => {
   const REST_API_KEY = process.env.NEXT_PUBLIC_KAKAO_LOGIN_REST_API_KEY
   const REDIRECT_URL = process.env.NEXT_PUBLIC_KAKAO_LOGIN_REDIRECT_URI
   const link = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URL}&response_type=code`
-
+  //ddds
   return (
     <>
       <button
