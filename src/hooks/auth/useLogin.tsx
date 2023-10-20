@@ -55,9 +55,10 @@ const useLogin = () => {
         const response: AxiosResponse<loginAuthResponse> = await loginInstance.post("/auth/login", loginValues)
         const { accessToken, refreshToken, user } = response.data
         setUser(user)
-        // setAccessToken(accessToken)
-        // setRefreshToken(refreshToken)
-        router.replace(typeof router.query.next === "string" ? router.query.next : "/")
+        setAccessToken(accessToken)
+        setRefreshToken(refreshToken)
+        const nextRoutes = typeof router.query.next === "string" ? router.query.next : "/"
+        router.replace(nextRoutes)
       } catch (error) {
         // 서버에러
       } finally {
