@@ -18,6 +18,8 @@ export const instance = axios.create({
 instance.interceptors.request.use((config) => {
   const reqId = uuidv4()
   config.headers["x-request-id"] = reqId
+  const token = Cookies.get("accessToken")
+  config.headers.Authorization = token ? `Bearer ${token}` : ""
   return config
 })
 
