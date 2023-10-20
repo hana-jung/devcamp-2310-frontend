@@ -1,12 +1,10 @@
-import Cookies from "js-cookie"
+import { AxiosError } from "axios"
 import { useRouter } from "next/router"
 import React, { useState } from "react"
-import { access } from "fs"
 import { signUpValuesStore } from "src/stores/member-store/types/signup-values-store"
 import { useUserStore } from "src/stores/user-store/userStore"
-import { AuthResponse } from "src/types/apiResponse"
+import { AuthResponse, ServerErrorResponse } from "src/types/apiResponse"
 import axiosInstance from "src/utils/httpClient"
-import { setCookieStorageValue } from "src/utils/storage"
 
 type agreementsType = {
   [key: string]: boolean
@@ -18,6 +16,7 @@ type agreementsType = {
 
 const useAgreement = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [serverError, setServerError] = useState<string>("")
   const [error, setError] = useState<string | null>(null)
   const [allAgree, setAllAgree] = useState(false)
   const [agree, setAgree] = useState({
@@ -49,7 +48,7 @@ const useAgreement = () => {
   const { email, nickname, password, confirmpassword, role, notification } = signUpValuesStore()
 
   const handleSubmit = async () => {
-    const user = {
+    const userInfo = {
       email,
       password,
       nickname,
@@ -62,11 +61,17 @@ const useAgreement = () => {
       setIsLoading(true)
 
       try {
-        await axiosInstance.post("/auth/signup", user)
-        setCookieStorageValue("user", JSON.stringify(user))
-        router.push(typeof router.query.next === "string" ? router.query.next : "/")
+        const reponse = await axiosInstance.post("/auth/signup", userInfo)
+        const { user, accessToken, refreshToken } = reponse.data
+        setUser(user)
+        setAccessToken(accessToken)
+        setRefreshToken(refreshToken)
+        // setCookieStorageValue("user", JSON.stringify(user))
+        router.replace(typeof router.query.next === "string" ? router.query.next : "/")
       } catch (error) {
         // 서버에러
+        const axiosError = error as AxiosError<ServerErrorResponse>
+        setServerError(axiosError.response?.data.message || "관리자에게 문의해주세요.")
       } finally {
         setIsLoading(false)
       }
@@ -83,6 +88,7 @@ const useAgreement = () => {
     handleSubmit,
     error,
     isLoading,
+    serverError,
   }
 }
 
