@@ -34,7 +34,7 @@ instance.interceptors.response.use(
     if (error.response) {
       // 에러일 경우 처리(이미 가입한 회원)
       // ("/member-redirect")로 이동해야함
-
+      console.log("error", error)
       console.log("에러입니다")
     }
 
